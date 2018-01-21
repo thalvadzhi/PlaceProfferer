@@ -10,6 +10,8 @@ public class Constants {
     //semantic graph relations (named edges)
     public static final String RELATION_COMPOUND = "compound";
     public static final String RELATION_DIRECT_OBJECT = "dobj";
+    public static final String RELATION_ADJUNCT = "nmod";
+
 
     //patterns
     public static final String PATTERN_VERB = "VB.*";

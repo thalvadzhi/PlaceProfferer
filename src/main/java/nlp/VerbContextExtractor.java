@@ -12,10 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static constants.Constants.RELATION_DIRECT_OBJECT;
-import static constants.Constants.RELATION_COMPOUND;
-import static constants.Constants.POS_CAT_ADJECTIVE;
-import static constants.Constants.PATTERN_VERB;
+import static constants.Constants.*;
 
 
 /**
@@ -34,8 +31,10 @@ public class VerbContextExtractor {
             List<Pair<GrammaticalRelation, IndexedWord>> allChildren = getAllChildren(semanticGraph, verb);
 
             for(Pair<GrammaticalRelation, IndexedWord> verbChild : allChildren){
-                if(RELATION_DIRECT_OBJECT.equals(verbChild.first().getShortName())){
-                    //find all direct objects that are governed by the verb
+                if(RELATION_DIRECT_OBJECT.equals(verbChild.first().getShortName())
+                        || RELATION_ADJUNCT.equals(verbChild.first().getShortName())){
+                    //find all direct objects or adjuncts that are governed by the verb
+
                     Context ctx = new Context(verbChild.second().value());
                     List<Pair<GrammaticalRelation, IndexedWord>> objectSpecifiers =
                             getAllChildren(semanticGraph, verbChild.second());
