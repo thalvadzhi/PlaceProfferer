@@ -33,9 +33,7 @@
             <version>3.8.0</version>
             <classifier>models-english</classifier>
         </dependency>
-    </dependencies>
 
-    <dependencies>
         <dependency>
             <!-- jsoup HTML parser library @ https://jsoup.org/ -->
             <groupId>org.jsoup</groupId>
