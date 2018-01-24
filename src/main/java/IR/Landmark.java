@@ -5,10 +5,15 @@
  */
 package IR;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author ILIYAN
  */
 public class Landmark {
-    
+    String name;
+    String[] location;
+    String rating;
+    ArrayList<String> reviews;
 }
