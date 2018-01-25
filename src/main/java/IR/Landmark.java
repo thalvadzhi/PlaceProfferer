@@ -51,5 +51,28 @@ public class Landmark {
     public int getId() {
         return id;
     }
-    
+
+    public String getName() {
+        return name;
+    }
+
+    public String[] getLocation() {
+        return location;
+    }
+
+    public String getRating() {
+        return rating;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
 }
