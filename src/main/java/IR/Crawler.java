@@ -84,6 +84,7 @@ public class Crawler {
                     Place place = new Place(placeName, coordsPlace);
                     places.add(i, place);
                     
+                    
                     File file = new File(placeName);
                     writeToFile(placeName, placeName);
 
@@ -107,6 +108,7 @@ public class Crawler {
                         //System.out.println("DEPTH3 NESHTO ?!@#?!");
                         if (!page.attr("href").contains("#REVIEWS")) {
                             getPageLinks(page.attr("abs:href"), depth);
+                            isNewLandmark = true;
                         }
                     }
 
@@ -116,6 +118,7 @@ public class Crawler {
                         //System.out.println("ATTRACTIONS ?!@#?!");
                         if (page.attr("href").contains("#FILTERED_LIST")) {
                             getPageLinks(page.attr("abs:href"), depth);
+                            isNewLandmark = true;
                         }
                     }
                     
@@ -124,7 +127,7 @@ public class Crawler {
 
                 if (depth == 3) {
                     depth++;
-                    
+                    System.out.println("BOOLEAN = " + isNewLandmark);
                     if(isNewLandmark) {
                         isNewLandmark = false;
                         j++;
@@ -203,6 +206,10 @@ public class Crawler {
                             getPageLinks(mainURL, depth);
                         }
                     }
+                    
+                    System.out.println("I = " + i + " NAME: " + places.get(i).getName() + " Comments: "+ 
+                            " COORDS: " + places.get(i).getLocation()[0] + " " + places.get(i).getLocation()[1] + 
+                            " LANDMARKS: " + places.get(i).getLandmarks().size());
                 }
 
             } catch (IOException e) {
