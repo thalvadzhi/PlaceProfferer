@@ -3,12 +3,14 @@ package nlp;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.IndexedWord;
 import edu.stanford.nlp.semgraph.SemanticGraph;
+import edu.stanford.nlp.simple.Document;
 import edu.stanford.nlp.simple.Sentence;
 import edu.stanford.nlp.trees.GrammaticalRelation;
 import edu.stanford.nlp.util.Pair;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -79,5 +81,32 @@ public class VerbContextExtractor {
                 .getAllNodesByPartOfSpeechPattern(PATTERN_VERB));
         //find all the verbs in the sentence
         return maybeAllVerbs.orElse(new ArrayList<>());
+    }
+
+    public static HashMap<Integer, List<Sentence>> getAllSentences(HashMap<Integer, List<String>> reviews){
+        HashMap<Integer, List<Sentence>> sentences = new HashMap<>();
+        for(Integer key : reviews.keySet()){
+            List<String> reviewsString = reviews.get(key);
+            for (String review : reviewsString){
+                Document doc = new Document(review);
+                if(sentences.containsKey(key)){
+                    sentences.get(key).addAll(doc.sentences());
+                }else{
+                    sentences.put(key, doc.sentences());
+                }
+            }
+        }
+        return sentences;
+    }
+
+    public static List<Pair<Verb, Context>> getActivityTest(List<Sentence> reviews){
+        List<Pair<Verb, Context>> lst = new ArrayList<>();
+        for(Sentence s : reviews){
+            SemanticGraph semanticGraph = s.dependencyGraph();
+            List<Pair<Verb, Context>> verbContextPairs = getVerbContextPairs(semanticGraph);
+
+            lst.addAll(verbContextPairs);
+        }
+        return lst;
     }
 }
