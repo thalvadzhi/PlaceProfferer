@@ -9,10 +9,8 @@ import edu.stanford.nlp.trees.GrammaticalRelation;
 import edu.stanford.nlp.util.Pair;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static constants.Constants.*;
 
@@ -90,13 +88,23 @@ public class VerbContextExtractor {
             for (String review : reviewsString){
                 Document doc = new Document(review);
                 if(sentences.containsKey(key)){
-                    sentences.get(key).addAll(doc.sentences());
+                    sentences.get(key).addAll(splitSentences(review));
                 }else{
                     sentences.put(key, doc.sentences());
                 }
             }
         }
         return sentences;
+    }
+
+    private  static List<Sentence> splitSentences(String text){
+        List<Sentence> collect = null;
+        try {
+            collect = Arrays.stream(text.split("\\.")).map(Sentence::new).collect(Collectors.toList());
+        }catch (Exception e){
+            return new ArrayList<>();
+        }
+        return collect;
     }
 
     public static List<Pair<Verb, Context>> getActivityTest(List<Sentence> reviews){
