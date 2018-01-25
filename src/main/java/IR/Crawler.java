@@ -38,6 +38,8 @@ public class Crawler {
     private int i = -1; // counter for places
     private int j = -1; // counter for landmarks
     private boolean isNewLandmark = false;
+    private static int id = 0;
+    private String country = "";
     
     public Crawler() {
         links = new HashSet<String>();
@@ -58,6 +60,10 @@ public class Crawler {
                 Document document = Jsoup.connect(URL).get();
                 if (depth == 0) {
 
+                    String heading = document.title();
+                    String[] filteredHeading = heading.split("[0-9]", 2);
+                    country = filteredHeading[0];
+                    
                     //Elements linksOnPage = document.select("a[href^=\"https://www.tripadvisor.com/Tourism-\"]");
                     Elements linksOnPage = document.select(".popularCities > a");
 
@@ -135,7 +141,13 @@ public class Crawler {
                         String title = "\n" + document.title();
                         
                         Element spanRating = document.select("span.overallRating").first();
-                        String overallRating = "RATING: " + spanRating.html();
+                        String overallRating;
+                        if(spanRating != null) {
+                        overallRating = "RATING: " + spanRating.html();
+                        }
+                        else {
+                            overallRating = new String("0");
+                        }
                         
                         String[] coords = new String[2];
                         String trickyLink1 = "https://www.tripadvisor.com/MetaPlacementAjax?detail=";
@@ -145,11 +157,16 @@ public class Crawler {
                         String trickyURL = trickyLink1 + secondURL[0] + trickyLink2;
                         coords = getCoords(trickyURL);
                         
-                        Landmark landmark = new Landmark(title, coords, overallRating);
+                        Elements categories = document.select(".detail > a");
+                        String category = categories.html();
+                        
+                        Landmark landmark = new Landmark(title, coords, overallRating, id, country, placeName, category);
                         Elements comments = document.select(".partial_entry");
                         Elements commentHeadline = document.select(".noQuotes");
                         landmark.addReviews(commentHeadline.html());
                         landmark.addReviews(comments.html());
+                        
+                        id++;
                         
                         Place placeFromList = places.get(i);
                         placeFromList.addLandmark(landmark);
@@ -226,10 +243,17 @@ public class Crawler {
             String src = link.attr("src");
             String splitSrc[] = src.split("center=");
 
-            String secondSplitSrc[] = splitSrc[1].split("&maptype");
-
-            coords = secondSplitSrc[0].split(",");
-            System.out.println();
+            String secondSplitSrc[] = new String[2];
+            if(splitSrc.length > 1) {
+                secondSplitSrc = splitSrc[1].split("&maptype");
+                coords = secondSplitSrc[0].split(",");                
+            }
+            
+            else {
+                coords[0] = null;
+                coords[1] = null;
+            }
+            //coords = secondSplitSrc[0].split(",");
         } catch (IOException e) {
         }
         return coords;
@@ -243,14 +267,24 @@ public class Crawler {
 
     public void printAll() {
         System.out.println("NAME: " + places.get(0).getName() + 
-                            "LOC: " + places.get(0).getLocation() + "Comments: "+ 
-                            places.get(0).getLandmarks().get(1).getReviews().toString());
+                            "LOC: " + places.get(0).getLocation() + " ID= "+ 
+                            places.get(0).getLandmarks().get(0).getId() + "\n" +
+                " ID= " + places.get(0).getLandmarks().get(1).getId());
     }
+
+    public ArrayList<Place> getPlaces() {
+        return places;
+    }
+
     
     public static void main(String[] args) {
         Crawler crawler = new Crawler();
         crawler.getPageLinks("https://www.tripadvisor.com/Tourism-g294451-Bulgaria-Vacations.html", 0);
-        crawler.printAll();
+        //crawler.getPageLinks("https://www.tripadvisor.com/Tourism-g188045-Switzerland-Vacations.html", 0);
+        //crawler.getPageLinks("https://www.tripadvisor.com/Tourism-g499086-Sunny_Beach_Burgas_Province-Vacations.html", 1);
+        //crawler.printAll();
+        
+        
         
     }
 }

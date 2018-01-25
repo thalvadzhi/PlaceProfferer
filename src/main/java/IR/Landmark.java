@@ -12,22 +12,32 @@ import java.util.ArrayList;
  * @author ILIYAN
  */
 public class Landmark {
+    private int id = 0;
     private String name;
     private String[] location;
     private String rating;
     private ArrayList<String> reviews;
+    private String category;
+    private String city;
+    private String country;
 
     public Landmark() {
     }
 
-    public Landmark(String name, String[] location, String rating) {
+    public Landmark(String name, String[] location, String rating, int id,
+                    String country, String city, String category) {
         this.name = new String(name);
         this.location = new String[location.length];
         for (int i = 0; i < location.length; i++) {
-            this.location[i] = new String(location[i]);
+            //this.location[i] = new String(location[i]);
+            this.location[i] = location[i];
         }
         this.rating = rating;
         reviews = new ArrayList<>();
+        this.id = id;
+        this.country = country;
+        this.city = city;
+        this.category = category;
     }
 
     public void addReviews(String review) {
@@ -37,6 +47,9 @@ public class Landmark {
     public ArrayList<String> getReviews() {
         return reviews;
     }
-    
+
+    public int getId() {
+        return id;
+    }
     
 }
