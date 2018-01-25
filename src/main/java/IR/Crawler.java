@@ -1,6 +1,5 @@
 package IR;
 
-
 import com.sun.org.apache.bcel.internal.generic.AALOAD;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -40,7 +39,7 @@ public class Crawler {
     private boolean isNewLandmark = false;
     private static int id = 0;
     private String country = "";
-    
+
     public Crawler() {
         links = new HashSet<String>();
         places = new ArrayList<>();
@@ -63,8 +62,7 @@ public class Crawler {
                     String heading = document.title();
                     String[] filteredHeading = heading.split("[0-9]", 2);
                     country = filteredHeading[0];
-                    
-                    //Elements linksOnPage = document.select("a[href^=\"https://www.tripadvisor.com/Tourism-\"]");
+
                     Elements linksOnPage = document.select(".popularCities > a");
 
                     depth++;
@@ -73,11 +71,11 @@ public class Crawler {
                     }
                 }
 
-                if (depth == 1) {                    
+                if (depth == 1) {
                     String heading = document.title();
                     String[] filteredHeading = heading.split("[0-9]", 2);
                     placeName = filteredHeading[0];
-                    
+
                     String[] coordsPlace = new String[2];
                     String trickyLink1 = "https://www.tripadvisor.com/MetaPlacementAjax?detail=";
                     String trickyLink2 = "&placementName=location_nearby&disableLazyLoading=true";
@@ -85,33 +83,27 @@ public class Crawler {
                     String secondURL[] = arrURL[1].split("-");
                     String trickyURL = trickyLink1 + secondURL[0] + trickyLink2;
                     coordsPlace = getCoords(trickyURL);
-                    
+
                     i++;
                     Place place = new Place(placeName, coordsPlace);
                     places.add(i, place);
-                    
-                    
+
                     File file = new File(placeName);
                     writeToFile(placeName, placeName);
 
                     Elements thingsToDo = document.select("a[href^=\"/Attractions\"]");
-                    //System.out.println("THINGS TO DO: " + thingsToDo);
                     depth++;
                     for (Element page : thingsToDo) {
-                        //System.out.println(page.attr("abs:href"));
                         getPageLinks(page.attr("abs:href"), depth);
-                        //i++;
                     }
                 }
 
                 if (depth == 2) {
                     isNewLandmark = true;
                     j = -1;
-                    //System.out.println("depth2 here");
                     Elements topThingsToDo = document.select("a[href^=\"/Attraction_Review\"]");
                     depth++;
                     for (Element page : topThingsToDo) {
-                        //System.out.println("DEPTH3 NESHTO ?!@#?!");
                         if (!page.attr("href").contains("#REVIEWS")) {
                             getPageLinks(page.attr("abs:href"), depth);
                             isNewLandmark = true;
@@ -121,34 +113,30 @@ public class Crawler {
                     Elements otherPages = document.select("a[href^=\"/Attractions\"]");
                     depth--;
                     for (Element page : topThingsToDo) {
-                        //System.out.println("ATTRACTIONS ?!@#?!");
                         if (page.attr("href").contains("#FILTERED_LIST")) {
                             getPageLinks(page.attr("abs:href"), depth);
                             isNewLandmark = true;
                         }
                     }
-                    
-                    
                 }
 
                 if (depth == 3) {
                     depth++;
                     System.out.println("BOOLEAN = " + isNewLandmark);
-                    if(isNewLandmark) {
+                    if (isNewLandmark) {
                         isNewLandmark = false;
                         j++;
-                        
+
                         String title = "\n" + document.title();
-                        
+
                         Element spanRating = document.select("span.overallRating").first();
                         String overallRating;
-                        if(spanRating != null) {
-                        overallRating = "RATING: " + spanRating.html();
-                        }
-                        else {
+                        if (spanRating != null) {
+                            overallRating = "RATING: " + spanRating.html();
+                        } else {
                             overallRating = new String("0");
                         }
-                        
+
                         String[] coords = new String[2];
                         String trickyLink1 = "https://www.tripadvisor.com/MetaPlacementAjax?detail=";
                         String trickyLink2 = "&placementName=location_nearby&disableLazyLoading=true";
@@ -156,77 +144,45 @@ public class Crawler {
                         String secondURL[] = arrURL[1].split("-");
                         String trickyURL = trickyLink1 + secondURL[0] + trickyLink2;
                         coords = getCoords(trickyURL);
-                        
+
                         Elements categories = document.select(".detail > a");
                         String category = categories.html();
-                        
+
                         Landmark landmark = new Landmark(title, coords, overallRating, id, country, placeName, category);
                         Elements comments = document.select(".partial_entry");
                         Elements commentHeadline = document.select(".noQuotes");
                         landmark.addReviews(commentHeadline.html());
                         landmark.addReviews(comments.html());
-                        
+
                         id++;
-                        
+
                         Place placeFromList = places.get(i);
                         placeFromList.addLandmark(landmark);
                         places.set(i, placeFromList);
-                    }
-                    
-                    else if(!isNewLandmark) {
+                    } else if (!isNewLandmark) {
                         Place placeFromList = places.get(i);
                         ArrayList<Landmark> landmarksList = placeFromList.getLandmarks();
                         Landmark landmarkFromList = landmarksList.get(j);
-                        
+
                         Elements comments = document.select(".partial_entry");
                         Elements commentHeadline = document.select(".noQuotes");
-                        
+
                         landmarkFromList.addReviews(commentHeadline.html());
                         landmarkFromList.addReviews(comments.html());
-                        
-                        landmarksList.set(j, landmarkFromList);
-                        places.set(i, new Place(placeFromList.getName(), placeFromList.getLocation(),landmarksList));
-                    }
-                    
-                    
-                    //
-                    //writeToFile(placeName, title);
-                    
-                    
-                    //Element spanRating = document.select("span.overallRating").first();
-                    //String overallRating = "RATING: " + spanRating.html();
-                    //writeToFile(placeName, overallRating);
-                    //TO DO: COORDS !
-                    /*String[] coords = new String[2];
-                    String trickyLink1 = "https://www.tripadvisor.com/MetaPlacementAjax?detail=";
-                    String trickyLink2 = "&placementName=location_nearby&disableLazyLoading=true";
-                    String arrURL[] = URL.split("-d");
-                    String secondURL[] = arrURL[1].split("-");
-                    String trickyURL = trickyLink1 + secondURL[0] + trickyLink2;
-                    coords = getCoords(trickyURL);
-                    writeToFile(placeName, "COORDS: " + coords[0] + " " + coords[1]);*/
 
-                    //Elements comments = document.select(".partial_entry");
-                    //Elements commentHeadline = document.select(".noQuotes");
-                    //writeToFile(placeName, commentHeadline.html());
-                    //writeToFile(placeName, comments.html());
+                        landmarksList.set(j, landmarkFromList);
+                        places.set(i, new Place(placeFromList.getName(), placeFromList.getLocation(), landmarksList));
+                    }
 
                     depth--;
                     Elements hrefs = document.getElementsByClass("pageNum taLnk ");
-                    //System.out.println("HREFSSSSSS " + hrefs);
                     for (Element hr : hrefs) {
                         if (hr.hasAttr("data-href")) {
                             String attr = hr.attr("data-href");
-                            //System.out.println("DOPYLNITELNI " + attr);
-                            //www.tripadvisor.com + attr
                             String mainURL = "https://www.tripadvisor.com" + attr;
                             getPageLinks(mainURL, depth);
                         }
                     }
-                    
-                    System.out.println("I = " + i + " NAME: " + places.get(i).getName() + " Comments: "+ 
-                            " COORDS: " + places.get(i).getLocation()[0] + " " + places.get(i).getLocation()[1] + 
-                            " LANDMARKS: " + places.get(i).getLandmarks().size());
                 }
 
             } catch (IOException e) {
@@ -244,16 +200,13 @@ public class Crawler {
             String splitSrc[] = src.split("center=");
 
             String secondSplitSrc[] = new String[2];
-            if(splitSrc.length > 1) {
+            if (splitSrc.length > 1) {
                 secondSplitSrc = splitSrc[1].split("&maptype");
-                coords = secondSplitSrc[0].split(",");                
-            }
-            
-            else {
+                coords = secondSplitSrc[0].split(",");
+            } else {
                 coords[0] = null;
                 coords[1] = null;
             }
-            //coords = secondSplitSrc[0].split(",");
         } catch (IOException e) {
         }
         return coords;
@@ -265,26 +218,14 @@ public class Crawler {
         writer.close();
     }
 
-    public void printAll() {
-        System.out.println("NAME: " + places.get(0).getName() + 
-                            "LOC: " + places.get(0).getLocation() + " ID= "+ 
-                            places.get(0).getLandmarks().get(0).getId() + "\n" +
-                " ID= " + places.get(0).getLandmarks().get(1).getId());
-    }
-
     public ArrayList<Place> getPlaces() {
         return places;
     }
 
-    
     public static void main(String[] args) {
         Crawler crawler = new Crawler();
         crawler.getPageLinks("https://www.tripadvisor.com/Tourism-g294451-Bulgaria-Vacations.html", 0);
         //crawler.getPageLinks("https://www.tripadvisor.com/Tourism-g188045-Switzerland-Vacations.html", 0);
         //crawler.getPageLinks("https://www.tripadvisor.com/Tourism-g499086-Sunny_Beach_Burgas_Province-Vacations.html", 1);
-        //crawler.printAll();
-        
-        
-        
     }
 }
