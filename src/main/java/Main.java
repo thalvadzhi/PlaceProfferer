@@ -23,6 +23,7 @@ import org.apache.lucene.util.Version;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -99,6 +100,31 @@ public class Main {
         List<ActivityPlace> transform = DataTransformation.transform(places);
         HashMap<Integer, List<String>> integerListHashMap = DataTransformation.normalizeReviews(places);
         System.out.println(transform.toString());
-
+        
+        
+        HashMap<String, List<String>> map = new HashMap<>();
+        List<String> ls = new ArrayList<>();
+        ls.addAll(Arrays.asList("photograph", "enjoy", "relax", "sightseeing"));
+        map.put("Sights", ls);
+        
+        List<String> ls11 = new ArrayList<>();
+        ls11.addAll(Arrays.asList("shopping","spending","walking","watching","seeing"));
+        map.put("Shopping Malls", ls11);
+        
+        List<String> ls10 = new ArrayList<>();
+        ls11.addAll(Arrays.asList("watching","seeing","enjoy", "sightseeing", "photograph"));
+        map.put("Landmarks", ls10);
+        
+        List<String> ls9 = new ArrayList<>();
+        ls11.addAll(Arrays.asList("watching","seeing","enjoy","photograph"));
+        map.put("Museums", ls9);
+        
+        List<String> ls8 = new ArrayList<>();
+        ls11.addAll(Arrays.asList("watching","seeing","enjoy", "sightseeing", "photograph", "relax", "running", "hiking", "claiming"));
+        map.put("Nature", ls8);
+        
+        List<String> ls7 = new ArrayList<>();
+        ls11.addAll(Arrays.asList("eating","enjoy", "relax", "photograph", "walking", "running", "playing"));
+        map.put("Parks", ls7);
     }
 }
