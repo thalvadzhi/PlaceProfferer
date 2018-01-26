@@ -3,11 +3,13 @@ package IR.index;
 import IR.Converter;
 import IR.Place;
 import IR.location.NearestLocations;
+import edu.stanford.nlp.util.Pair;
 import nlp.Context;
 import nlp.Verb;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -84,7 +86,7 @@ public class IndexManager {
         cityIndex = IndexBuilder.buildCityIndex(this.dummyTransformedPlaces);
         categoryIndex = IndexBuilder.buildCategoryIndex(this.dummyTransformedPlaces);
         countryIndex = IndexBuilder.buildCountryIndex(this.dummyTransformedPlaces);
-        idIndex = IndexBuilder.buildIdIndex(this.transformedPlaces);
+        idIndex = IndexBuilder.buildIdIndex(this.dummyTransformedPlaces);
 
     }
 
@@ -190,6 +192,13 @@ public class IndexManager {
         }
     }
 
+    public void setRatingById(int id, double rating){
+        if(idIndex.containsKey(id)){
+            idIndex.get(id).getRating().setRating(rating);
+        }
+        resortUpdated(id);
+    }
+
     public void updateRatingById(int id, double rating){
         if(rating > 5){
             rating = 5;
@@ -199,6 +208,29 @@ public class IndexManager {
 
         if(idIndex.containsKey(id)){
             idIndex.get(id).getRating().updateRatingBy(rating);
+        }
+        resortUpdated(id);
+    }
+
+    private void sortByRating(List<Posting> ls){
+        Collections.sort(ls, ((o1, o2) -> (int)(o2.rating.getRating()*10 - o1.rating.getRating()*10)));
+    }
+
+    public void resortUpdated(int id){
+        if(idIndex.containsKey(id)){
+            ActivityPlace activityPlace = idIndex.get(id);
+            sortByRating(countryIndex.get(activityPlace.getCountry()));
+            sortByRating(cityIndex.get(activityPlace.getCity()));
+            for(String cat : activityPlace.getCategory()){
+                sortByRating(categoryIndex.get(cat));
+            }
+            for(Pair<Verb, Context> verbContextPair : activityPlace.getActivities()){
+                if(verbContextPair.first() != null){
+                    sortByRating(verbIndex.get(verbContextPair.first()));
+                }
+                //todo implement context resorting
+//                if(verbContextPair.second())
+            }
         }
     }
 

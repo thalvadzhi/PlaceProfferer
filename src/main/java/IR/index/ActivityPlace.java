@@ -33,6 +33,7 @@ public class ActivityPlace {
         this.category = Arrays.stream(landmark.getCategory().replace("&amp;","\n").split("\n")).map(String::trim).collect(Collectors.toList());
         this.city = landmark.getCity();
         this.country = landmark.getCountry();
+        activities = new ArrayList<>();
 
 
     }

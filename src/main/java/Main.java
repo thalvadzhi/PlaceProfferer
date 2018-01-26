@@ -205,19 +205,8 @@ public class Main {
 //        List<Posting> parse = parser.parse(queryMap, activities);
         System.out.println(parser.parseGetNames(queryMap, activities));
 
-        manager.updateRatingById(0, 100);
-        manager.updateRatingById(0, 100);
-        manager.updateRatingById(0, 100);
-        manager.updateRatingById(0, 100);
-        manager.updateRatingById(0, 100);
-        manager.updateRatingById(0, 100);
-        manager.updateRatingById(0, 100);
-        manager.updateRatingById(0, 100);
-        manager.updateRatingById(0, 100);
-        manager.updateRatingById(0, 100);
-        manager.updateRatingById(0, 100);
-        manager.updateRatingById(0, 100);
-        manager.updateRatingById(0, 100);
+        manager.setRatingById(0, 100);
+
 
         ActivityPlace placeById = manager.getPlaceById(0);
 
