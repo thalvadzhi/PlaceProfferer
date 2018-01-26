@@ -5,6 +5,9 @@
  */
 package gui;
 
+import IR.index.IndexManager;
+import IR.queryParser.QueryParser;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -19,6 +22,7 @@ import javax.swing.JTextField;
  */
 public class GUI extends javax.swing.JFrame {
 
+    private IndexManager manager;
     /**
      * Creates new form GUI
      */
@@ -42,20 +46,25 @@ public class GUI extends javax.swing.JFrame {
         });
     }
 
+    private String[] listToArrayWithAll(List<String> ls){
+        ls.add(0, "All");
+        return ls.toArray(new String[]{});
+    }
+
     public GUI() {
         initComponents();
+        manager = new IndexManager("Bulgaria.txt", true);
+        List<String> allCities = manager.getAllCities();
 
-        String[] cities = {"All", "Sofia", "Plovdiv", "Varna"};
-        setComboBox(comboBoxCity, cities);
+        setComboBox(comboBoxCity, listToArrayWithAll(allCities));
 
-        String[] countries = {"All", "Bulgaria", "Spain"};
-        setComboBox(comboBoxCountry, countries);
+        setComboBox(comboBoxCountry, listToArrayWithAll(manager.getAllCountries()));
 
-        String[] categories = {"All", "Museum", "Snowboard", "Playing"};
-        setComboBox(comboBoxCategory, categories);
+//        String[] categories = {"All", "Museum", "Snowboard", "Playing"};
+        setComboBox(comboBoxCategory, listToArrayWithAll(manager.getAllCategories()));
 
-        String[] activities = {"Playing", "Photographing", "Extra", "Enyoj", "Relax"};
-        setList(lstActivity, activities);
+//        String[] activities = {"Playing", "Photographing", "Extra", "Enyoj", "Relax"};
+        setList(lstActivity, listToArrayWithAll(manager.getAllVerbs()));
 
     }
 
@@ -306,9 +315,9 @@ public class GUI extends javax.swing.JFrame {
         country = (String) comboBoxCountry.getSelectedItem();
         city = (String) comboBoxCity.getSelectedItem();
         cat = (String) comboBoxCategory.getSelectedItem();
-        getDoubleFromTxt(txtDistance, distance);
-        getDoubleFromTxt(txtLatitude, lat);
-        getDoubleFromTxt(txtLongitude, lon);
+        distance = getDoubleFromTxt(txtDistance);
+        lat = getDoubleFromTxt(txtLatitude);
+        lon = getDoubleFromTxt(txtLongitude);
 
         List<String> selectedValuesList = lstActivity.getSelectedValuesList();
 
@@ -316,25 +325,38 @@ public class GUI extends javax.swing.JFrame {
         queryValues.put("Country", country);
         queryValues.put("City", city);
         queryValues.put("Category", cat);
-        queryValues.put("Lat", String.valueOf(lat));
-        queryValues.put("Lon", String.valueOf(lon));
-        queryValues.put("Distance", String.valueOf(distance));
-      //  List<String> result = method(queryValues, selectedValuesList);
-        System.out.println(queryValues.toString());
-        System.out.println(selectedValuesList.toString());
-      //  txtAreaResult.setText(formatResult(result));
+        if(lat != 0.0){
+            queryValues.put("Lat", String.valueOf(lat));
+        }else{
+            queryValues.put("Lat", "None");
+        }
+        if(lon != 0.0){
+            queryValues.put("Lon", String.valueOf(lon));
+        }else{
+            queryValues.put("Lon", "None");
+        }
+        if(distance != 0.0){
+            queryValues.put("Distance", String.valueOf(distance));
+        }else{
+            queryValues.put("Distance", "None");
+        }
+        QueryParser parser = new QueryParser(manager);
+        List<String> result = parser.parseGetNames(queryValues, selectedValuesList);
+//       method(queryValues, selectedValuesList);
+
+        txtAreaResult.setText(formatResult(result));
     }//GEN-LAST:event_btnSearchActionPerformed
     //dummy
     private List<String> method(HashMap h, List<String> ls) {
         return null;
     }
 
-    private void getDoubleFromTxt(JTextField txt, Double d) {
+    private double getDoubleFromTxt(JTextField txt) {
         try {
-            d = Double.valueOf(txt.getText());
+            return Double.valueOf(txt.getText());
         } catch (Exception e) {
             txtAreaResult.setText("Enter proper value for text fields");
-            return;
+            return 0.0;
         }
     }
 
