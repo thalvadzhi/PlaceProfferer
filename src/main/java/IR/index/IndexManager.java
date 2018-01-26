@@ -190,4 +190,16 @@ public class IndexManager {
         }
     }
 
+    public void updateRatingById(int id, double rating){
+        if(rating > 5){
+            rating = 5;
+        }else if (rating < 0){
+            rating = 0;
+        }
+
+        if(idIndex.containsKey(id)){
+            idIndex.get(id).getRating().updateRatingBy(rating);
+        }
+    }
+
 }

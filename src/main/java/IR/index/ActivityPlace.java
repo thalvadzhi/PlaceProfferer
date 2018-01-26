@@ -18,7 +18,7 @@ public class ActivityPlace {
     int id;
     String name;
     String[] location;
-    double rating;
+    Rating rating;
     List<String> category;
     String city;
     String country;
@@ -28,10 +28,12 @@ public class ActivityPlace {
         this.id = landmark.getId();
         this.name = landmark.getName().replace("\n", "").split(" -")[0];
         this.location = landmark.getLocation();
-        this.rating = Double.parseDouble(landmark.getRating().replace("RATING: ", ""));
+        int numberOfReviews = landmark.getReviews().size() * 10;
+        this.rating = new Rating(Double.parseDouble(landmark.getRating().replace("RATING: ", "")), numberOfReviews);
         this.category = Arrays.stream(landmark.getCategory().replace("&amp;","\n").split("\n")).map(String::trim).collect(Collectors.toList());
         this.city = landmark.getCity();
         this.country = landmark.getCountry();
+
 
     }
 
@@ -39,7 +41,7 @@ public class ActivityPlace {
         this.city = city;
     }
 
-    public void setRating(double rating){
+    public void setRating(Rating rating){
         this.rating = rating;
     }
 
@@ -77,7 +79,7 @@ public class ActivityPlace {
         return location;
     }
 
-    public double getRating() {
+    public Rating getRating() {
         return rating;
     }
 

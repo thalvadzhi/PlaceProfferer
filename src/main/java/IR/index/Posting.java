@@ -5,17 +5,18 @@ package IR.index;
  */
 public class Posting {
     int placeId;
-    double rating;
+//    double rating;
+    Rating rating;
 
     @Override
     public String toString() {
         return "Posting{" +
                 "placeId=" + placeId +
-                ", rating=" + rating +
+                ", rating=" + rating.toString() +
                 '}';
     }
 
-    public Posting(int placeId, double rating) {
+    public Posting(int placeId, Rating rating) {
         this.placeId = placeId;
         this.rating = rating;
     }
@@ -24,7 +25,7 @@ public class Posting {
         return placeId;
     }
 
-    public double getRating() {
+    public Rating getRating() {
         return rating;
     }
 

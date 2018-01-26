@@ -1,6 +1,7 @@
 package IR.queryParser;
 
 import IR.Place;
+import IR.index.ActivityPlace;
 import IR.index.IndexManager;
 import IR.index.IndexOperations;
 import IR.index.Posting;
@@ -81,6 +82,12 @@ public class QueryParser {
         List<Posting> postings = parse(nonActivities, activities);
         List<String> strings = postings.stream().map((Posting pos) -> manager.getPlaceById(pos.getPlaceId()).getName()).collect(Collectors.toList());
         return strings;
+    }
+
+    public List<ActivityPlace> parseGetPlaces(HashMap<String, String> nonActivities, List<String> activities){
+        List<Posting> postings = parse(nonActivities, activities);
+        List<ActivityPlace> places = postings.stream().map((Posting pos) -> manager.getPlaceById(pos.getPlaceId())).collect(Collectors.toList());
+        return places;
     }
 
     private List<Posting> getPostingFromCorrectIndex(String key, String value){
