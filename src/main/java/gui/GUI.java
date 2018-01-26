@@ -5,13 +5,13 @@
  */
 package gui;
 
+import IR.index.ActivityPlace;
 import IR.index.IndexManager;
 import IR.queryParser.QueryParser;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JTextField;
@@ -23,6 +23,7 @@ import javax.swing.JTextField;
 public class GUI extends javax.swing.JFrame {
 
     private IndexManager manager;
+    private List<ActivityPlace> resultPlaces;
     /**
      * Creates new form GUI
      */
@@ -386,8 +387,9 @@ public class GUI extends javax.swing.JFrame {
             queryValues.put("Distance", "None");
         }
         QueryParser parser = new QueryParser(manager);
-        List<String> result = parser.parseGetNames(queryValues, selectedValuesList);
-//       method(queryValues, selectedValuesList);
+        resultPlaces = parser.parseGetPlaces(queryValues, selectedValuesList);
+        List<String> result = resultPlaces.stream().map(x -> x.getName()).collect(Collectors.toList());
+
 
         txtAreaResult.setText(formatResult(result));
     }//GEN-LAST:event_btnSearchActionPerformed
@@ -431,10 +433,23 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_txtLongitudeActionPerformed
 
     private void btnShowActivityPlaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowActivityPlaceActionPerformed
-        txtShowActivityPlace.setText(txtAreaResult.getSelectedText());
-        double rating = 3.6; // call method to get actual rating od PLACE
-        txtRate.setText(String.valueOf(rating));
+        String name = txtAreaResult.getSelectedText();
+        txtShowActivityPlace.setText(name);
+        ActivityPlace place = getPlaceFromName(name);
+        if(place != null){
+            double rating = place.getRating().getRating(); // call method to get actual rating od PLACE
+            txtRate.setText(String.valueOf(rating));
+        }
     }//GEN-LAST:event_btnShowActivityPlaceActionPerformed
+
+    private ActivityPlace getPlaceFromName(String name) {
+        List<ActivityPlace> collect = resultPlaces.stream().filter(x -> x.getName().equals(name)).collect(Collectors.toList());
+        if(collect.size() != 0){
+            return collect.get(0);
+        }else{
+            return null;
+        }
+    }
 
     private void btnRateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRateActionPerformed
         Double value = 5.0;
@@ -445,8 +460,17 @@ public class GUI extends javax.swing.JFrame {
             return;
         }
         if(value >= 0 && value <= 5){
-            //call to BACKEND to change rate od place
-            txtShowActivityPlace.setText("Succesfully");
+            String name = txtShowActivityPlace.getText();
+            int id;
+            try{
+                id = getPlaceFromName(name).getId();
+            } catch(Exception e){
+                return;
+            }
+            manager.updateRatingById(id, value);
+            txtShowActivityPlace.setText("Succesful");
+        }else{
+            txtShowActivityPlace.setText("Error values");
         }
     }//GEN-LAST:event_btnRateActionPerformed
 
