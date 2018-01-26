@@ -6,10 +6,12 @@
 package gui;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JList;
+import javax.swing.JTextField;
 
 /**
  *
@@ -20,12 +22,11 @@ public class GUI extends javax.swing.JFrame {
     /**
      * Creates new form GUI
      */
-    
-    private void setComboBox(JComboBox box, String[] ss){
+    private void setComboBox(JComboBox box, String[] ss) {
         box.setModel(new javax.swing.DefaultComboBoxModel<>(ss));
     }
-    
-    private void setList(JList list,String[] ss ){
+
+    private void setList(JList list, String[] ss) {
         list.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = ss;
 
@@ -38,24 +39,24 @@ public class GUI extends javax.swing.JFrame {
             public String getElementAt(int index) {
                 return ss[index];//To change body of generated methods, choose Tools | Templates.
             }
-      });
+        });
     }
+
     public GUI() {
         initComponents();
-        
-        
-        String[] cities = {"All", "Sofia","Plovdiv","Varna"};
+
+        String[] cities = {"All", "Sofia", "Plovdiv", "Varna"};
         setComboBox(comboBoxCity, cities);
-    
+
         String[] countries = {"All", "Bulgaria", "Spain"};
         setComboBox(comboBoxCountry, countries);
-        
-        String[] categories = {"All","Museum","Snowboard","Playing"};
+
+        String[] categories = {"All", "Museum", "Snowboard", "Playing"};
         setComboBox(comboBoxCategory, categories);
-        
-        String[] activities = {"Playing","Photographing","Extra","Enyoj","Relax"};
+
+        String[] activities = {"Playing", "Photographing", "Extra", "Enyoj", "Relax"};
         setList(lstActivity, activities);
-    
+
     }
 
     /**
@@ -67,22 +68,27 @@ public class GUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        comboBoxCity = new JComboBox<>();
+        comboBoxCity = new javax.swing.JComboBox<>();
         lblCity = new javax.swing.JLabel();
         lblCountry = new javax.swing.JLabel();
-        comboBoxCountry = new JComboBox<>();
+        comboBoxCountry = new javax.swing.JComboBox<>();
         lblCountry1 = new javax.swing.JLabel();
-        comboBoxCategory = new JComboBox<>();
+        comboBoxCategory = new javax.swing.JComboBox<>();
         btnSearch = new javax.swing.JButton();
         lblActivity = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        lstActivity = new JList<>();
+        lstActivity = new javax.swing.JList<>();
         lblDistance = new javax.swing.JLabel();
         txtDistance = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtAreaResult = new javax.swing.JTextArea();
         lbResult = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        lblDistance1 = new javax.swing.JLabel();
+        lblDistance2 = new javax.swing.JLabel();
+        txtLatitude = new javax.swing.JTextField();
+        txtLongitude = new javax.swing.JTextField();
+        lblKm = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -146,98 +152,133 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
+        lblDistance1.setText("Latitude");
+
+        lblDistance2.setText("Longitude");
+
+        txtLatitude.setText("42.6977082");
+        txtLatitude.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtLatitudeActionPerformed(evt);
+            }
+        });
+
+        txtLongitude.setText("23.3218675");
+        txtLongitude.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtLongitudeActionPerformed(evt);
+            }
+        });
+
+        lblKm.setText("km");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(62, 62, 62)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblCity)
-                            .addComponent(lblCountry)
-                            .addComponent(lblCountry1)
-                            .addComponent(lblDistance))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblDistance1)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtLatitude)
+                        .addGap(2, 2, 2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(lblDistance2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtLongitude, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(7, 7, 7))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(lblDistance)
+                        .addGap(22, 22, 22)
+                        .addComponent(txtDistance, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblKm)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblCity)
+                                    .addComponent(lblCountry)
+                                    .addComponent(lblCountry1))
                                 .addGap(29, 29, 29)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(comboBoxCountry, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(comboBoxCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(comboBoxCity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(txtDistance, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(lblActivity, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jButton1))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(0, 0, Short.MAX_VALUE)
-                                        .addComponent(jButton1))
+                                        .addGap(154, 154, 154)
+                                        .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(156, 156, 156)
-                                                .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(177, 177, 177)
-                                                .addComponent(lbResult)))
-                                        .addGap(0, 0, Short.MAX_VALUE)))
-                                .addContainerGap())
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(66, 66, 66)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(57, Short.MAX_VALUE))))
+                                        .addGap(175, 175, 175)
+                                        .addComponent(lbResult)))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(30, 30, 30)
-                                .addComponent(lblActivity)))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addGap(58, 58, 58)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(29, 29, 29)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(lblCountry)
-                                    .addComponent(comboBoxCountry, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jButton1))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(43, 43, 43)
-                                .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(comboBoxCity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblCity)))
+                        .addContainerGap()
+                        .addComponent(jButton1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(43, 43, 43)
+                        .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(lbResult)))
+                .addGap(0, 44, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblCountry)
+                    .addComponent(comboBoxCountry, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblCountry1)
-                            .addComponent(comboBoxCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(lblActivity)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(43, 43, 43)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblDistance)
-                            .addComponent(txtDistance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(comboBoxCity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblCity))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblCountry1)
+                    .addComponent(comboBoxCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27)
+                .addComponent(lblActivity)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblDistance)
+                    .addComponent(txtDistance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblKm))
+                .addGap(46, 46, 46)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblDistance1)
+                    .addComponent(txtLatitude, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtLongitude, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblDistance2))
+                .addGap(18, 18, 18))
         );
 
         pack();
@@ -257,51 +298,70 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_comboBoxCategoryActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-       String country,city,cat;
-       Double distance = 0.0;
-       country = (String) comboBoxCountry.getSelectedItem();
-       city = (String) comboBoxCity.getSelectedItem();
-       cat = (String) comboBoxCategory.getSelectedItem();
-       
-       try {
-            distance = Double.valueOf(txtDistance.getText());
-       } catch(Exception e){
-           txtAreaResult.setText("Enter Proper Distance!!");
-           return;
-       }
-       List<String> selectedValuesList = lstActivity.getSelectedValuesList();
+        String country, city, cat;
+        Double distance = 0.0;
+        Double lat = 0.0;
+        Double lon = 0.0;
 
-       HashMap<String, String> queryValues = new HashMap<String, String>();
-       queryValues.put("Country", country);
-       queryValues.put("City", city);
-       queryValues.put("Category", cat);
-       queryValues.put("Distance", String.valueOf(distance));
-       
-       List<String> result = method(queryValues,selectedValuesList);
-        
-        txtAreaResult.setText(formatResult(result));
+        country = (String) comboBoxCountry.getSelectedItem();
+        city = (String) comboBoxCity.getSelectedItem();
+        cat = (String) comboBoxCategory.getSelectedItem();
+        getDoubleFromTxt(txtDistance, distance);
+        getDoubleFromTxt(txtLatitude, lat);
+        getDoubleFromTxt(txtLongitude, lon);
+
+        List<String> selectedValuesList = lstActivity.getSelectedValuesList();
+
+        HashMap<String, String> queryValues = new HashMap<String, String>();
+        queryValues.put("Country", country);
+        queryValues.put("City", city);
+        queryValues.put("Category", cat);
+        queryValues.put("Lat", String.valueOf(lat));
+        queryValues.put("Lon", String.valueOf(lon));
+        queryValues.put("Distance", String.valueOf(distance));
+      //  List<String> result = method(queryValues, selectedValuesList);
+        System.out.println(queryValues.toString());
+        System.out.println(selectedValuesList.toString());
+      //  txtAreaResult.setText(formatResult(result));
     }//GEN-LAST:event_btnSearchActionPerformed
     //dummy
-    private List<String> method(HashMap h, List<String> ls){
+    private List<String> method(HashMap h, List<String> ls) {
         return null;
     }
-    
-    private String formatResult(List<String> ss){
+
+    private void getDoubleFromTxt(JTextField txt, Double d) {
+        try {
+            d = Double.valueOf(txt.getText());
+        } catch (Exception e) {
+            txtAreaResult.setText("Enter proper value for text fields");
+            return;
+        }
+    }
+
+    private String formatResult(List<String> ss) {
         StringBuilder sbuilder = new StringBuilder();
         int count = 0;
-        for(String s :ss){
+        for (String s : ss) {
             count++;
             sbuilder.append(count);
-            sbuilder.append(".  "+s+'\n');
+            sbuilder.append(".  " + s + '\n');
         }
-        
+
         return sbuilder.toString();
     }
-    
-    
+
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtLatitudeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLatitudeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtLatitudeActionPerformed
+
+    private void txtLongitudeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLongitudeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtLongitudeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -340,9 +400,9 @@ public class GUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSearch;
-    private JComboBox<String> comboBoxCategory;
-    private JComboBox<String> comboBoxCity;
-    private JComboBox<String> comboBoxCountry;
+    private javax.swing.JComboBox<String> comboBoxCategory;
+    private javax.swing.JComboBox<String> comboBoxCity;
+    private javax.swing.JComboBox<String> comboBoxCountry;
     private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -352,8 +412,13 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel lblCountry;
     private javax.swing.JLabel lblCountry1;
     private javax.swing.JLabel lblDistance;
-    private JList<String> lstActivity;
+    private javax.swing.JLabel lblDistance1;
+    private javax.swing.JLabel lblDistance2;
+    private javax.swing.JLabel lblKm;
+    private javax.swing.JList<String> lstActivity;
     private javax.swing.JTextArea txtAreaResult;
     private javax.swing.JTextField txtDistance;
+    private javax.swing.JTextField txtLatitude;
+    private javax.swing.JTextField txtLongitude;
     // End of variables declaration//GEN-END:variables
 }
