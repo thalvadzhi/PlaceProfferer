@@ -32,7 +32,7 @@ public class Main {
 //        sent.lemmas();
 
 //        Sentence sent3 = new Sentence("Unless you want to play in the snow, ski or toboggan you might find yourself at a bit if a lose end.");
-//        Sentence sent2 = new Sentence("I even enjoyed walking down the beautiful Kärtnerstrasse admiring many nice, original shops");
+//        Sentence sent2 = new Sentence("I even enjoyed walking down the beautiful Kartnerstrasse admiring many nice, original shops");
 //        Sentence sent4 = new Sentence("You can enjoy a great view, hike or just walk for a few hours and recharge your batteries ");
 //        SemanticGraph semanticGraph = sent4.dependencyGraph();
 //        semanticGraph.prettyPrint();
