@@ -143,7 +143,7 @@ public class IndexBuilder {
 
     private static void sortPostings(HashMap<?, List<Posting>> index){
         for(Object key : index.keySet()){
-            Collections.sort(index.get(key), (o1, o2) -> (int)(o2.rating - o1.rating));
+            Collections.sort(index.get(key), (o1, o2) -> (int)(o2.rating*10 - o1.rating*10));
         }
     }
 
