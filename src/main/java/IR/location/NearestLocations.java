@@ -2,6 +2,7 @@ package IR.location;
 
 import IR.Place;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,13 +39,29 @@ public class NearestLocations {
 
         double closestDist = distance(Double.parseDouble(closest.getLocation()[0]), Double.parseDouble(closest.getLocation()[1]), lat, lon, "K");
         for(Place place : places){
-            double newDist = distance(Double.parseDouble(place.getLocation()[0]), Double.parseDouble(place.getLocation()[1]), lat, lon, "K");
-            if (newDist < closestDist){
-                closest = place;
-                closestDist = newDist;
+            if(!"Bulgaria ".equals(place.getName())){
+                double newDist = distance(Double.parseDouble(place.getLocation()[0]), Double.parseDouble(place.getLocation()[1]), lat, lon, "K");
+                if (newDist < closestDist){
+                    closest = place;
+                    closestDist = newDist;
+                }
             }
         }
         return closest;
+    }
+
+    public static List<Place> findCitiesWithinRadius(List<Place> places, double lat, double lon, double maxDistance){
+        List<Place> placesWithinRadius = new ArrayList<>();
+        for(Place place : places){
+            if(!"Bulgaria ".equals(place.getName())){
+                double placeDist = distance(Double.parseDouble(place.getLocation()[0]), Double.parseDouble(place.getLocation()[1]), lat, lon, "K");
+                if(placeDist <= maxDistance){
+                    placesWithinRadius.add(place);
+                }
+            }
+        }
+        return placesWithinRadius;
+
     }
 
 }

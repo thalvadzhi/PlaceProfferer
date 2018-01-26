@@ -3,6 +3,7 @@ import IR.Place;
 import IR.index.*;
 import IR.location.NearestLocations;
 import IR.queryParser.ParseQueries;
+import IR.queryParser.QueryParser;
 import edu.stanford.nlp.semgraph.SemanticGraph;
 import edu.stanford.nlp.simple.Sentence;
 import edu.stanford.nlp.simple.SentimentClass;
@@ -14,7 +15,6 @@ import nlp.Verb;
 import nlp.VerbContextExtractor;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
@@ -89,33 +89,33 @@ public class Main {
 //        for(Posting p : IndexOperations.operationAnd(ls1,ls2))
 //        System.out.print(p.toString() + "   ");
 //        //IndexOperations.operationOr(ls1,ls2).toString();
-        File file = new File("Bulgaria.txt");
-        BufferedReader reader = new BufferedReader(new FileReader(file));
-
-        String json = reader.readLine();
-        ArrayList<Place> places = Converter.deserialization(json);
-        List<ActivityPlace> transform = DataTransformation.transform(places);
-        HashMap<String, Integer> categories = new HashMap<>();
-        for (ActivityPlace pl : transform){
-            for(String cat : pl.getCategory()){
-                if(categories.containsKey(cat)){
-                    categories.put(cat, categories.get(cat) + 1);
-                }else{
-                    categories.put(cat, 1);
-                }
-            }
-//            categories.addAll(pl.getCategory());
-        }
+//        File file = new File("Bulgaria.txt");
+//        BufferedReader reader = new BufferedReader(new FileReader(file));
+//
+//        String json = reader.readLine();
+//        ArrayList<Place> places = Converter.deserialization(json);
+//        List<ActivityPlace> transform = DataTransformation.transform(places);
+//        HashMap<String, Integer> categories = new HashMap<>();
+//        for (ActivityPlace pl : transform){
+//            for(String cat : pl.getCategory()){
+//                if(categories.containsKey(cat)){
+//                    categories.put(cat, categories.get(cat) + 1);
+//                }else{
+//                    categories.put(cat, 1);
+//                }
+//            }
+////            categories.addAll(pl.getCategory());
+//        }
 //        categories.stream().forEach(System.out::println);
-        HashMap<Integer, List<String>> integerListHashMap = DataTransformation.normalizeReviews(places);
-        System.out.println(transform.toString());
-
-        HashMap<Integer, List<Sentence>> allSentences = VerbContextExtractor.getAllSentences(integerListHashMap);
-        System.out.println(transform.toString());
-
-        List<Pair<Verb, Context>> activityTest = VerbContextExtractor.getActivityTest(allSentences.get(0));
-        activityTest.stream().forEach(System.out::println);
-          System.out.println("E");
+//        HashMap<Integer, List<String>> integerListHashMap = DataTransformation.normalizeReviews(places);
+//        System.out.println(transform.toString());
+//
+//        HashMap<Integer, List<Sentence>> allSentences = VerbContextExtractor.getAllSentences(integerListHashMap);
+//        System.out.println(transform.toString());
+//
+//        List<Pair<Verb, Context>> activityTest = VerbContextExtractor.getActivityTest(allSentences.get(0));
+//        activityTest.stream().forEach(System.out::println);
+//          System.out.println("E");
 //
 //        HashMap<String, List<String>> map = new HashMap<>();
 //        List<String> ls = new ArrayList<>();
@@ -186,6 +186,26 @@ public class Main {
 //        NearestLocations.findNearestCity(places, 42.695381, 23.320123);
 //
 //        System.out.println("E");
+
+        IndexManager manager = new IndexManager("Bulgaria.txt", true);
+        QueryParser parser = new QueryParser(manager);
+
+        HashMap<String, String> queryMap = new HashMap<>();
+        queryMap.put("Country", "All");
+        queryMap.put("City", "All");
+        queryMap.put("Category", "All");
+        queryMap.put("Lat", "42.695381");
+        queryMap.put("Lon", "23.320123");
+        queryMap.put("Distance", "20");
+
+        ArrayList<String> activities = new ArrayList<>();
+        activities.add("sightseeing");
+        List<String> allVerbs = manager.getAllVerbs();
+
+//        List<Posting> parse = parser.parse(queryMap, activities);
+        System.out.println(parser.parseGetNames(queryMap, activities));
+
+        System.out.println("E");
 
     }
 }

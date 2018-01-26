@@ -2,6 +2,8 @@ package IR.index;
 
 
 
+import javafx.geometry.Pos;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -32,6 +34,16 @@ public class IndexOperations {
         ArrayList<Posting> union = new ArrayList<>(firstSet);
         Collections.sort(union, (o1, o2)-> (int)(o2.rating*10 - o1.rating*10));
         return union;
+    }
+
+    public static List<Posting> operationOr(List<List<Posting>> postings){
+        HashSet<Posting> union = new HashSet<>();
+        for(List<Posting> posting : postings){
+            union.addAll(posting);
+        }
+        ArrayList<Posting> unionSorted = new ArrayList<>(union);
+        Collections.sort(unionSorted, (o1, o2)-> (int)(o2.rating*10 - o1.rating*10));
+        return unionSorted;
     }
 
 }

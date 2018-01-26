@@ -87,6 +87,7 @@ public class VerbContextExtractor {
             List<String> reviewsString = reviews.get(key);
             for (String review : reviewsString){
                 Document doc = new Document(review);
+//                doc.sentences()
                 if(sentences.containsKey(key)){
                     sentences.get(key).addAll(splitSentences(review));
                 }else{

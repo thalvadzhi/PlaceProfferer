@@ -49,17 +49,29 @@ public class IndexBuilder {
 //        }
 //
 //    }
+    public static HashMap<Integer, ActivityPlace> buildIdIndex(List<ActivityPlace> places){
+        HashMap<Integer, ActivityPlace> idIndex = new HashMap<>();
+
+        for(ActivityPlace place : places){
+            idIndex.put(place.getId(), place);
+        }
+        return idIndex;
+    }
 
     public static HashMap<String, List<Posting>> buildCountryIndex(List<ActivityPlace> places){
         HashMap<String, List<Posting>> countryIndex = new HashMap<>();
 
         for(ActivityPlace place : places) {
             //building the country index
+            Posting posting = new Posting(place.getId(), place.getRating());
+
             if (countryIndex.containsKey(place.getCountry())) {
-                countryIndex.get(place.getCountry()).add(new Posting(place.getId(), place.getRating()));
+                if(!countryIndex.get(place.getCountry()).contains(posting)){
+                    countryIndex.get(place.getCountry()).add(posting);
+                }
             } else {
                 ArrayList<Posting> postings = new ArrayList<>();
-                postings.add(new Posting(place.getId(), place.getRating()));
+                postings.add(posting);
                 countryIndex.put(place.getCountry(), postings);
             }
         }
@@ -71,12 +83,15 @@ public class IndexBuilder {
         HashMap<String, List<Posting>> cityIndex = new HashMap<>();
 
         for(ActivityPlace place : places) {
+            Posting posting = new Posting(place.getId(), place.getRating());
 
             if (cityIndex.containsKey(place.getCity())) {
-                cityIndex.get(place.getCity()).add(new Posting(place.getId(), place.getRating()));
+                if(!cityIndex.get(place.getCity()).contains(posting)){
+                    cityIndex.get(place.getCity()).add(posting);
+                }
             } else {
                 ArrayList<Posting> postings = new ArrayList<>();
-                postings.add(new Posting(place.getId(), place.getRating()));
+                postings.add(posting);
                 cityIndex.put(place.getCity(), postings);
             }
         }
@@ -89,12 +104,15 @@ public class IndexBuilder {
 
         for(ActivityPlace place : places) {
             for(String category : place.getCategory()){
+                Posting posting = new Posting(place.getId(), place.getRating());
 
                 if (categoryIndex.containsKey(category)) {
-                    categoryIndex.get(category).add(new Posting(place.getId(), place.getRating()));
+                    if(!categoryIndex.get(category).contains(posting)){
+                        categoryIndex.get(category).add(posting);
+                    }
                 } else {
                     ArrayList<Posting> postings = new ArrayList<>();
-                    postings.add(new Posting(place.getId(), place.getRating()));
+                    postings.add(posting);
                     categoryIndex.put(category, postings);
                 }
             }
@@ -109,11 +127,14 @@ public class IndexBuilder {
         //building the activity index
         for(ActivityPlace place : places){
             for(Pair<Verb,Context> activity: place.getActivities()){
+                Posting posting = new Posting(place.getId(), place.getRating());
                 if(verbIndex.containsKey(activity.first())){
-                    verbIndex.get(activity.first()).add(new Posting(place.getId(), place.getRating()));
+                    if(!verbIndex.get(activity.first()).contains(posting)){
+                        verbIndex.get(activity.first()).add(posting);
+                    }
                 }else{
                     ArrayList<Posting> postings = new ArrayList<>();
-                    postings.add(new Posting(place.getId(), place.getRating()));
+                    postings.add(posting);
                     verbIndex.put(activity.first(), postings);
                 }
             }
@@ -128,11 +149,14 @@ public class IndexBuilder {
 
         for(ActivityPlace place : places){
             for(Pair<Verb,Context> activity: place.getActivities()){
+                Posting posting = new Posting(place.getId(), place.getRating());
                 if(contextIndex.containsKey(activity.second())){
-                    contextIndex.get(activity.second()).add(new Posting(place.getId(), place.getRating()));
+                    if(!contextIndex.get(activity.second()).contains(posting)){
+                        contextIndex.get(activity.second()).add(posting);
+                    }
                 }else{
                     ArrayList<Posting> postings = new ArrayList<>();
-                    postings.add(new Posting(place.getId(), place.getRating()));
+                    postings.add(posting);
                     contextIndex.put(activity.second(), postings);
                 }
             }
