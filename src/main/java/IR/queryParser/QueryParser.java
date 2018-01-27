@@ -61,14 +61,15 @@ public class QueryParser {
         }
 
         //now filter by activity
-
-        for(String activity : activities){
-            Verb verb = new Verb(activity);
-            if(current == null){
-                current = manager.indexVerb(verb);
-            }else{
-                List<Posting> temp = manager.indexVerb(verb);
-                current = IndexOperations.operationAnd(current, temp);
+        if(activities.size() != 1 || !"All".equals(activities.get(0))){
+            for(String activity : activities){
+                Verb verb = new Verb(activity);
+                if(current == null){
+                    current = manager.indexVerb(verb);
+                }else{
+                    List<Posting> temp = manager.indexVerb(verb);
+                    current = IndexOperations.operationAnd(current, temp);
+                }
             }
         }
         if(current != null){

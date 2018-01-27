@@ -122,7 +122,7 @@ public class IndexManager {
 
     public List<Posting> indexCategory(String category){
         if(categoryIndex.containsKey(category)){
-            return countryIndex.get(category);
+            return categoryIndex.get(category);
         }else{
             return new ArrayList<>();
         }

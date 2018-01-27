@@ -12,43 +12,6 @@ import java.util.*;
  * Created by thalvadzhiev on 1/25/18.
  */
 public class IndexBuilder {
-//    public static HashMap<String, HashMap<String, List<Posting>>> buildIndices(List<ActivityPlace> places){
-//        HashMap<String, List<Posting>> countryIndex = new HashMap<>();
-//        HashMap<String, List<Posting>> cityIndex = new HashMap<>();
-//
-//        HashMap<String, List<Posting>> categoryIndex = new HashMap<>();
-//
-//        for(ActivityPlace place : places){
-//            //building the country index
-////            if(countryIndex.containsKey(place.getCountry())){
-////                countryIndex.get(place.getCountry()).add(new Posting(place.getId(), place.getRating()));
-////            }else{
-////                ArrayList<Posting> postings = new ArrayList<>();
-////                postings.add(new Posting(place.getId(), place.getRating()));
-////                countryIndex.put(place.getCountry(), postings);
-////            }
-//
-//            //building the city index
-////            if(cityIndex.containsKey(place.getCity())){
-////                cityIndex.get(place.getCity()).add(new Posting(place.getId(), place.getRating()));
-////            }else{
-////                ArrayList<Posting> postings = new ArrayList<>();
-////                postings.add(new Posting(place.getId(), place.getRating()));
-////                cityIndex.put(place.getCity(), postings);
-////            }
-//
-//            //building the category index
-////            if(categoryIndex.containsKey(place.getCategory())){
-////                categoryIndex.get(place.getCategory()).add(new Posting(place.getId(), place.getRating()));
-////            }else{
-////                ArrayList<Posting> postings = new ArrayList<>();
-////                postings.add(new Posting(place.getId(), place.getRating()));
-////                categoryIndex.put(place.getCategory(), postings);
-////            }
-//
-//        }
-//
-//    }
     public static HashMap<Integer, ActivityPlace> buildIdIndex(List<ActivityPlace> places){
         HashMap<Integer, ActivityPlace> idIndex = new HashMap<>();
 
