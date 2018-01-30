@@ -13,6 +13,7 @@ import javafx.geometry.Pos;
 import nlp.Context;
 import nlp.Verb;
 import nlp.VerbContextExtractor;
+import nlp.dictionary.SynonymFinder;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.BooleanClause;
@@ -41,24 +42,27 @@ public class Main {
 //        System.out.println(verbContextPairs);
 //
 //
-        File file = new File("Bulgaria.txt");
-        BufferedReader reader = new BufferedReader(new FileReader(file));
+//        File file = new File("Bulgaria.txt");
+//        BufferedReader reader = new BufferedReader(new FileReader(file));
+////
+//        String json = reader.readLine();
+//        ArrayList<Place> places = Converter.deserialization(json);
+//        List<ActivityPlace> transform = DataTransformation.transform(places);
+//        HashMap<Integer, List<String>> reviews = DataTransformation.normalizeReviews(places);
 //
-        String json = reader.readLine();
-        ArrayList<Place> places = Converter.deserialization(json);
-        List<ActivityPlace> transform = DataTransformation.transform(places);
-        HashMap<Integer, List<String>> reviews = DataTransformation.normalizeReviews(places);
-
-        HashMap<Integer, List<Sentence>> allSentences = VerbContextExtractor.getAllSentences(reviews);
-
-        HashMap<String, List<Pair<Verb, Context>>> vcs = new HashMap<>();
+//        HashMap<Integer, List<Sentence>> allSentences = VerbContextExtractor.getAllSentences(reviews);
+//
+//        HashMap<String, List<Pair<Verb, Context>>> vcs = new HashMap<>();
 //        for(Integer i : allSentences.keySet()){
 //            vcs.addAll(VerbContextExtractor.getActivityTest(allSentences.get(i)));
 //        }
-        vcs.putAll(VerbContextExtractor.getActivityTest(allSentences.get(5)));
+//        vcs.putAll(VerbContextExtractor.getActivityTest(allSentences.get(5)));
 //        Sentence s = new Sentence("Awful place to make a picnic");
 //        System.out.println(s.sentiment());
 //        vcs.forEach(System.out::println);
+        SynonymFinder finder = new SynonymFinder();
+        List<String> synonymsOf = finder.findSynonymsOf("NN", "car");
+        synonymsOf.forEach(System.out::println);
         System.out.println("gyz");
 
 //        Sentence ss = new Sentence("Nice park to visit in Sofia");
