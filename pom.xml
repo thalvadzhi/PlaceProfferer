@@ -63,6 +63,7 @@
             <artifactId>extjwnl</artifactId>
             <version>1.9.4</version>
         </dependency>
+        
         <!-- Princeton WordNet 3.1 data dependency -->
         <dependency>
             <groupId>net.sf.extjwnl</groupId>
