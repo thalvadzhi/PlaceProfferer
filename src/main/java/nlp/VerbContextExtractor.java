@@ -20,7 +20,9 @@ import static constants.Constants.*;
  */
 public class VerbContextExtractor {
 
-    public static List<Pair<Verb, Context>> getVerbContextPairs(SemanticGraph semanticGraph){
+    public static List<Pair<Verb, Context>> getVerbContextPairs(Sentence s){
+
+        SemanticGraph semanticGraph = new Sentence(s.text()).dependencyGraph();
 
         //TODO handle negatives
         List<Pair<Verb, Context>> vcPairs = new ArrayList<>();
@@ -28,6 +30,7 @@ public class VerbContextExtractor {
         //find all the verbs in the sentence
         List<IndexedWord> allVerbs = getAllVerbs(semanticGraph);
         for(IndexedWord verb : allVerbs){
+
             List<Pair<GrammaticalRelation, IndexedWord>> allChildren = getAllChildren(semanticGraph, verb);
 
             for(Pair<GrammaticalRelation, IndexedWord> verbChild : allChildren){
@@ -35,22 +38,23 @@ public class VerbContextExtractor {
                         || RELATION_ADJUNCT.equals(verbChild.first().getShortName())){
                     //find all direct objects or adjuncts that are governed by the verb
 
-                    Context ctx = new Context(verbChild.second().value());
+                    Context ctx = new Context(s.lemma(verbChild.second().index() - 1));
                     List<Pair<GrammaticalRelation, IndexedWord>> objectSpecifiers =
                             getAllChildren(semanticGraph, verbChild.second());
 
                     objectSpecifiers.stream()
                             .filter((Pair<GrammaticalRelation, IndexedWord> p) -> POS_CAT_ADJECTIVE
                                     .equals(p.second().getString(CoreAnnotations.PartOfSpeechAnnotation.class)))
-                            .forEach(((Pair<GrammaticalRelation, IndexedWord> p) -> ctx.addCharacteristic(p.second().value())));
+                            .forEach(((Pair<GrammaticalRelation, IndexedWord> p) -> ctx.addCharacteristic(s.lemma(p.second().index() - 1))));
                     //get all adjectives that specify the object
 
                     objectSpecifiers.stream()
                             .filter((Pair<GrammaticalRelation, IndexedWord> p) -> RELATION_COMPOUND
                                     .equals(p.first().getShortName()))
-                            .forEach(((Pair<GrammaticalRelation, IndexedWord> p) -> ctx.addCompound(p.second().value())));
+                            .forEach(((Pair<GrammaticalRelation, IndexedWord> p) -> ctx.addCompound(s.lemma(p.second().index() - 1))));
                     //also get compound nouns
-                    vcPairs.add(new Pair<>(new Verb(verb.value()), ctx));
+                    //get the lemma of the verb
+                    vcPairs.add(new Pair<>(new Verb(s.lemma(verb.index() - 1)), ctx));
                 }
             }
         }
@@ -86,12 +90,10 @@ public class VerbContextExtractor {
         for(Integer key : reviews.keySet()){
             List<String> reviewsString = reviews.get(key);
             for (String review : reviewsString){
-                Document doc = new Document(review);
-//                doc.sentences()
                 if(sentences.containsKey(key)){
                     sentences.get(key).addAll(splitSentences(review));
                 }else{
-                    sentences.put(key, doc.sentences());
+                    sentences.put(key, splitSentences(review));
                 }
             }
         }
@@ -108,13 +110,22 @@ public class VerbContextExtractor {
         return collect;
     }
 
-    public static List<Pair<Verb, Context>> getActivityTest(List<Sentence> reviews){
-        List<Pair<Verb, Context>> lst = new ArrayList<>();
+    public static HashMap<String, List<Pair<Verb, Context>>> getActivityTest(List<Sentence> reviews){
+        HashMap<String, List<Pair<Verb, Context>>> lst = new HashMap<>();
+        int i = 1;
         for(Sentence s : reviews){
-            SemanticGraph semanticGraph = s.dependencyGraph();
-            List<Pair<Verb, Context>> verbContextPairs = getVerbContextPairs(semanticGraph);
+            System.out.printf("\rWorking on review #%d out of %d", i, reviews.size());
+            i++;
 
-            lst.addAll(verbContextPairs);
+            if(!s.sentiment().isNegative()){
+
+//                SemanticGraph semanticGraph = new Sentence(s.text()).dependencyGraph();
+                List<Pair<Verb, Context>> verbContextPairs = getVerbContextPairs(s);
+                if(verbContextPairs.size() != 0){
+                    lst.put(s.text(), verbContextPairs);
+                }
+            }
+
         }
         return lst;
     }
