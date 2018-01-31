@@ -31,4 +31,22 @@ public class Context {
     public String toString() {
         return "Context: " + value + "; chars : " + characteristics + "; compounds: " + compounds;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Context context = (Context) o;
+
+        if (value != null ? !value.equals(context.value) : context.value != null) return false;
+        return compounds != null ? compounds.equals(context.compounds) : context.compounds == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = value != null ? value.hashCode() : 0;
+        result = 31 * result + (compounds != null ? compounds.hashCode() : 0);
+        return result;
+    }
 }

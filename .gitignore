@@ -1,3 +1,5 @@
 PlaceProfferer.iml 
 .idea/
 target/
+parse_backup/
+parsed/
