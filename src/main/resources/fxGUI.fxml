@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="490.0" prefWidth="845.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.fxgui.Controller">
+   <children>
+      <VBox layoutX="-1.0" prefHeight="400.0" prefWidth="234.0">
+         <children>
+            <ComboBox fx:id="chooseCountry" prefHeight="26.0" prefWidth="225.0" promptText="Select country" />
+            <ComboBox fx:id="chooseCity" prefHeight="26.0" prefWidth="225.0" promptText="Select city">
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </ComboBox>
+            <ComboBox fx:id="chooseCategory" layoutX="10.0" layoutY="56.0" prefHeight="26.0" prefWidth="225.0" promptText="Select category">
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </ComboBox>
+            <Label prefHeight="23.0" prefWidth="70.0" text="I want to...">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </Label>
+            <ScrollPane fx:id="activities" fitToHeight="true" prefHeight="140.0" prefWidth="234.0">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <content>
+                  <VBox fx:id="listContainer" prefHeight="138.0" prefWidth="222.0" />
+               </content>
+            </ScrollPane>
+            <Button fx:id="addActivity" mnemonicParsing="false" onAction="#onActionAddActivity" prefWidth="234.0" text="Add" />
+            <HBox prefHeight="33.0" prefWidth="224.0">
+               <children>
+                  <Label text="Lat:" />
+                  <TextField fx:id="lat" prefHeight="26.0" prefWidth="199.0" />
+               </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="33.0" prefWidth="224.0">
+               <children>
+                  <Label prefWidth="30.0" text="Lon:" />
+                  <TextField fx:id="lon" prefHeight="26.0" prefWidth="199.0" />
+               </children>
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="33.0" prefWidth="224.0">
+               <children>
+                  <Label prefWidth="100.0" text="Distance:" />
+                  <TextField fx:id="distance" prefHeight="26.0" prefWidth="193.0" />
+               </children>
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+         <padding>
+            <Insets left="10.0" top="10.0" />
+         </padding>
+      </VBox>
+      <ListView fx:id="results" layoutX="283.0" layoutY="14.0" prefHeight="386.0" prefWidth="546.0" />
+      <Button fx:id="search" layoutX="85.0" layoutY="409.0" mnemonicParsing="false" onAction="#onSearchAction" text="Search">
+         <effect>
+            <DropShadow />
+         </effect>
+      </Button>
+      <VBox fx:id="rating" layoutX="454.0" layoutY="400.0" prefHeight="90.0" prefWidth="197.0">
+         <children>
+            <HBox prefHeight="27.0" prefWidth="197.0">
+               <children>
+                  <Label text="Current rating:" />
+                  <Text fx:id="currentRating" strokeType="OUTSIDE" strokeWidth="0.0" />
+               </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="27.0" prefWidth="197.0">
+               <children>
+                  <Button fx:id="rateButton" mnemonicParsing="false" text="Rate" />
+                  <TextField fx:id="rateField" prefHeight="26.0" prefWidth="117.0" promptText="rate 0-5">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font name="Comfortaa Regular" size="13.0" />
+                     </font>
+                  </TextField>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</Pane>

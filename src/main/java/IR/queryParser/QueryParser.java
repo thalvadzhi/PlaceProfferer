@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static constants.Constants.*;
+
 /**
  * Created by thalvadzhiev on 1/26/18.
  */
@@ -22,22 +24,22 @@ public class QueryParser {
 
     public QueryParser(IndexManager manager){
         this.manager = manager;
-        keysBlacklist = Arrays.asList("Lat", "Lon", "Distance");
+        keysBlacklist = Arrays.asList(LAT, LON, DISTANCE);
 
     }
 
     public List<Posting> parse(HashMap<String, String> nonActivities, List<String> activities){
 
-        String lat = nonActivities.get("Lat");
-        String lon = nonActivities.get("Lon");
-        String distance = nonActivities.get("Distance");
+        String lat = nonActivities.get(LAT);
+        String lon = nonActivities.get(LON);
+        String distance = nonActivities.get(DISTANCE);
         List<Posting> landmarksInNearestCity = null;
 
-        if(!"None".equals(lat) && !"None".equals(lon) && "None".equals(distance)){
+        if(!NONE.equals(lat) && !NONE.equals(lon) && NONE.equals(distance)){
             //means location is set but distance is not
             //so we find the nearest city to the location
             landmarksInNearestCity = this.manager.getLandmarkInNearestCity(lat, lon);
-        }else if((!"None".equals(lat) && !"None".equals(lon) && !"None".equals(distance))){
+        }else if((!NONE.equals(lat) && !NONE.equals(lon) && !NONE.equals(distance))){
             //means we have location and distance
             //we can have multiple cities in the radius, so we get the postings of all the cities
             landmarksInNearestCity = this.manager.getLandmarksInCitiesWithinRadius(lat, lon, distance);
@@ -48,9 +50,8 @@ public class QueryParser {
 
         List<Posting> current = landmarksInNearestCity;
         for(String key : nonActivities.keySet()){
-            if(!"All".equals(nonActivities.get(key)) && !keysBlacklist.contains(key)){
+            if(!ALL.equals(nonActivities.get(key)) && !keysBlacklist.contains(key)){
                 //if key is within blacklist, then we've already handled it
-
                 if(current == null){
                     current = getPostingFromCorrectIndex(key, nonActivities.get(key));
                 }else{
@@ -61,15 +62,13 @@ public class QueryParser {
         }
 
         //now filter by activity
-        if(activities.size() != 1 || !"All".equals(activities.get(0))){
-            for(String activity : activities){
-                Verb verb = new Verb(activity);
-                if(current == null){
-                    current = manager.indexVerb(verb);
-                }else{
-                    List<Posting> temp = manager.indexVerb(verb);
-                    current = IndexOperations.operationAnd(current, temp);
-                }
+        for(String activity : activities){
+            Verb verb = new Verb(activity);
+            if(current == null){
+                current = manager.indexVerb(verb);
+            }else{
+                List<Posting> temp = manager.indexVerb(verb);
+                current = IndexOperations.operationAnd(current, temp);
             }
         }
         if(current != null){

@@ -368,9 +368,7 @@ public class GUI extends javax.swing.JFrame {
         List<String> selectedValuesList = lstActivity.getSelectedValuesList();
 
         HashMap<String, String> queryValues = new HashMap<String, String>();
-        queryValues.put("Country", country);
-        queryValues.put("City", city);
-        queryValues.put("Category", cat);
+
         if(lat != 0.0){
             queryValues.put("Lat", String.valueOf(lat));
         }else{

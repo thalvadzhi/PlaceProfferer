@@ -5,6 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <build>
+        <resources>
+            <resource>
+                <directory>${basedir}/src/main/resources</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </resource>
+        </resources>
 
         <plugins>
             <plugin>
@@ -63,7 +71,7 @@
             <artifactId>extjwnl</artifactId>
             <version>1.9.4</version>
         </dependency>
-        
+
         <!-- Princeton WordNet 3.1 data dependency -->
         <dependency>
             <groupId>net.sf.extjwnl</groupId>

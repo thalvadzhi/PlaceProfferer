@@ -60,17 +60,17 @@ public class Main {
 //        Sentence s = new Sentence("Awful place to make a picnic");
 //        System.out.println(s.sentiment());
 //        vcs.forEach(System.out::println);
-        SynonymFinder finder = new SynonymFinder();
-        List<String> synonymsOf = finder.findSynonymsOf("NN", "car");
-        synonymsOf.forEach(System.out::println);
-        System.out.println("gyz");
+//        SynonymFinder finder = new SynonymFinder();
+//        List<String> synonymsOf = finder.findSynonymsOf("NN", "car");
+//        synonymsOf.forEach(System.out::println);
+//        System.out.println("gyz");
 
-//        Sentence ss = new Sentence("Nice park to visit in Sofia");
+        Sentence ss = new Sentence("Climb a mountain");
 //        ss.sentiment();
-//        SemanticGraph semanticGraph = ss.dependencyGraph();
+        SemanticGraph semanticGraph = ss.dependencyGraph();
 //        List<Pair<Verb, Context>> verbContextPairs = VerbContextExtractor.getVerbContextPairs(semanticGraph);
 //        System.out.println(verbContextPairs);
-//        semanticGraph.prettyPrint();
+        semanticGraph.prettyPrint();
 
 
     }

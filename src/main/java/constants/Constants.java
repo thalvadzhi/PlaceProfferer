@@ -15,4 +15,18 @@ public class Constants {
 
     //patterns
     public static final String PATTERN_VERB = "VB.*";
+
+    //commands
+    public static final String NONE = "None";
+    public static final String ALL = "All";
+
+
+    //keys
+    public static final String COUNTRY = "Country";
+    public static final String CITY = "City";
+    public static final String CATEGORY = "Category";
+    public static final String LAT = "Lat";
+    public static final String LON = "Lon";
+    public static final String DISTANCE = "Distance";
+
 }
