@@ -68,16 +68,7 @@ public class QueryParser {
         }
 
         //now filter by activity
-//        for(String activity : activities){
-//
-//            Verb verb = new Verb(activity);
-//            if(current == null){
-//                current = manager.indexVerb(verb);
-//            }else{
-//                List<Posting> temp = manager.indexVerb(verb);
-//                current = IndexOperations.operationAnd(current, temp);
-//            }
-//        }
+
         current = handleActivities(activities, current);
         if(current != null){
             return current;
@@ -87,19 +78,32 @@ public class QueryParser {
     }
 
     private List<Posting> handleActivities(List<String> activities, List<Posting> current){
+        List<Posting> output = current;
+        List<Posting> temp;
         for(String activity : activities){
             Sentence s = new Sentence(activity);
             List<Pair<Verb, Context>> verbContextPairs = VerbContextExtractor.getVerbContextPairs(s);
             if(verbContextPairs.size() == 0){
                 //search for verbs only
-                current = getPostingsForVerbOnly(current, s);
+                temp = getPostingsForVerbOnly(current, s);
+                if(output == null){
+                    output = temp;
+                }else{
+                    output = IndexOperations.operationAnd(output, temp);
+                }
 
             }else{
                 //index verb and context index
-                current = getPostingsForVerbContext(current, verbContextPairs);
+                temp = getPostingsForVerbContext(current, verbContextPairs);
+                if(output == null){
+                    output = temp;
+                }else{
+                    output = IndexOperations.operationAnd(output, temp);
+                }
+//                current = getPostingsForVerbContext(current, verbContextPairs);
             }
         }
-        return current;
+        return output;
     }
 
     private List<Posting> getPostingsForVerbContext(List<Posting> current, List<Pair<Verb, Context>> verbContextPairs) {
@@ -109,6 +113,8 @@ public class QueryParser {
             List<Posting> temp = new ArrayList<>();
             if(postingsVerb.size() == 0){
                 temp = handleSynonyms(pair, postingsContext, temp);
+            }else{
+                temp = IndexOperations.operationAnd(postingsContext, postingsVerb);
             }
             if(current == null){
                 current = temp;

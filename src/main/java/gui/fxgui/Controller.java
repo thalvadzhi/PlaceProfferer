@@ -58,7 +58,7 @@ public class Controller {
 
 
     public void initialize() {
-        manager = new IndexManager("Bulgaria.txt", true);
+        manager = new IndexManager("Bulgaria.txt", false);
         parser = new QueryParser(manager);
 
         rating.setVisible(false);
@@ -99,6 +99,7 @@ public class Controller {
     }
 
     public void onSearchAction(ActionEvent e){
+        search.setDisable(true);
         rating.setVisible(false);
         String category = chooseCategory.getSelectionModel().getSelectedItem();
         String country = chooseCountry.getSelectionModel().getSelectedItem();
@@ -127,6 +128,8 @@ public class Controller {
         List<ActivityPlace> places = parser.parseGetPlaces(queryValues, activities);
         results.getItems().clear();
         results.getItems().addAll(places);
+        search.setDisable(false);
+
     }
 
     private void putOrAll(String key, String value, HashMap<String, String> queryValues){

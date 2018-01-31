@@ -78,24 +78,27 @@ public class Main {
 //        String js = Converter.readJsonFromFile("parsed/parsed_iliyan.txt");
 //        HashMap<Integer, List<Pair<Verb, Context>>> integerListHashMap = Converter.deserializeParserOutput(js);
 //        System.out.println("E");
-//        Sentence ss = new Sentence("Climb a mountain");
+        Sentence ss = new Sentence("take a photo");
 
         System.out.println("GYZ");
 //        ss.sentiment();
 //        SemanticGraph semanticGraph = ss.dependencyGraph();
-//        List<Pair<Verb, Context>> verbContextPairs = VerbContextExtractor.getVerbContextPairs(semanticGraph);
+        List<Pair<Verb, Context>> verbContextPairs = VerbContextExtractor.getVerbContextPairs(ss);
 //        System.out.println(verbContextPairs);
 //        semanticGraph.prettyPrint();
-        File dirParsed = new File("parsed");
-        File[] files = dirParsed.listFiles();
-        HashMap<Integer, List<Pair<Verb, Context>>> maps = new HashMap<>();
-        for(File f : files){
-            String js = Converter.readJsonFromFile(f.getAbsolutePath());
-            maps.putAll(Converter.deserializeParserOutput(js));
-        }
-        String js = Converter.serializeParserOutput(maps);
-        Converter.writeJsonToFile(js, "parse_final");
-        System.out.println("e");
+//        File dirParsed = new File("parsed");
+//        File[] files = dirParsed.listFiles();
+//        HashMap<Integer, List<Pair<Verb, Context>>> maps = new HashMap<>();
+//        for(File f : files){
+//            String js = Converter.readJsonFromFile(f.getAbsolutePath());
+//            maps.putAll(Converter.deserializeParserOutput(js));
+//        }
+        String js = Converter.readJsonFromFile("parse_final");
+        HashMap<Integer, List<Pair<Verb, Context>>> integerListHashMap = Converter.deserializeParserOutput(js);
+        System.out.println("GASDAD");
+//        String js = Converter.serializeParserOutput(maps);
+//        Converter.writeJsonToFile(js, "parse_final");
+//        System.out.println("e");
 
 
     }
