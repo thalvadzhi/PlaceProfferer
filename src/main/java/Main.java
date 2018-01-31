@@ -42,15 +42,15 @@ public class Main {
 //        System.out.println(verbContextPairs);
 //
 //
-//        File file = new File("Bulgaria.txt");
-//        BufferedReader reader = new BufferedReader(new FileReader(file));
-////
-//        String json = reader.readLine();
-//        ArrayList<Place> places = Converter.deserialization(json);
-//        List<ActivityPlace> transform = DataTransformation.transform(places);
-//        HashMap<Integer, List<String>> reviews = DataTransformation.normalizeReviews(places);
+        File file = new File("Bulgaria.txt");
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+//////
+        String json = reader.readLine();
+        ArrayList<Place> places = Converter.deserialization(json);
+        List<ActivityPlace> transform = DataTransformation.transform(places);
+        HashMap<Integer, List<String>> reviews = DataTransformation.normalizeReviews(places);
 //
-//        HashMap<Integer, List<Sentence>> allSentences = VerbContextExtractor.getAllSentences(reviews);
+        HashMap<Integer, List<Sentence>> allSentences = VerbContextExtractor.getAllSentences(reviews);
 //
 //        HashMap<String, List<Pair<Verb, Context>>> vcs = new HashMap<>();
 //        for(Integer i : allSentences.keySet()){
@@ -63,14 +63,27 @@ public class Main {
 //        SynonymFinder finder = new SynonymFinder();
 //        List<String> synonymsOf = finder.findSynonymsOf("NN", "car");
 //        synonymsOf.forEach(System.out::println);
-//        System.out.println("gyz");
+////        System.out.println("gyz");
+//        HashMap<Integer, List<Sentence>> test = new HashMap<>();
+//        test.put(5, allSentences.get(5));
+        int teodor_low_bound = 17;
+        int iliyan_low_bound = 65;
+        int iliyan_upper_bound = 145;
+//        String js = Converter.readJsonFromFile("parsed_all.txt");
+        HashMap<Integer, List<Sentence>> iliyanSentences = new HashMap<>();
+        for(int i = iliyan_low_bound; i <=iliyan_upper_bound; i++){
+            iliyanSentences.put(i, allSentences.get(i));
+        }
+        VerbContextExtractor.getAllActivities(iliyanSentences, "parsed_iliyan");
 
-        Sentence ss = new Sentence("Climb a mountain");
+//        HashMap<Integer, List<Pair<Verb, Context>>> integerListHashMap = Converter.deserializeParserOutput(js);
+        System.out.println("E");
+//        Sentence ss = new Sentence("Climb a mountain");
 //        ss.sentiment();
-        SemanticGraph semanticGraph = ss.dependencyGraph();
+//        SemanticGraph semanticGraph = ss.dependencyGraph();
 //        List<Pair<Verb, Context>> verbContextPairs = VerbContextExtractor.getVerbContextPairs(semanticGraph);
 //        System.out.println(verbContextPairs);
-        semanticGraph.prettyPrint();
+//        semanticGraph.prettyPrint();
 
 
     }

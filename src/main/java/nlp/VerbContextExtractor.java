@@ -1,5 +1,6 @@
 package nlp;
 
+import IR.Converter;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.IndexedWord;
 import edu.stanford.nlp.semgraph.SemanticGraph;
@@ -128,5 +129,40 @@ public class VerbContextExtractor {
 
         }
         return lst;
+    }
+
+    public static List<Pair<Verb, Context>> getActivities(List<Sentence> reviews, int i_from, int out_of){
+        List<Pair<Verb, Context>> activities = new ArrayList<>();
+        int i = i_from;
+        for(Sentence s : reviews){
+            System.out.printf("\rWorking on review #%d out of %d", i, out_of);
+            i++;
+
+            if(!s.sentiment().isNegative()){
+                List<Pair<Verb, Context>> verbContextPairs = getVerbContextPairs(s);
+                if(verbContextPairs.size() != 0){
+                    activities.addAll(verbContextPairs);
+                }
+            }
+
+        }
+        return activities;
+    }
+
+
+    public static HashMap<Integer, List<Pair<Verb, Context>>> getAllActivities(HashMap<Integer, List<Sentence>> sentences, String filename){
+        HashMap<Integer, List<Pair<Verb, Context>>> vcs = new HashMap<>();
+        int all_sentences = 0;
+        for(Integer key : sentences.keySet()){
+            all_sentences += sentences.get(key).size();
+        }
+        int i_so_far = 1;
+        for(Integer key : sentences.keySet()){
+            vcs.put(key, VerbContextExtractor.getActivities(sentences.get(key), i_so_far, all_sentences));
+            i_so_far += sentences.get(key).size() - 1;
+            String json = Converter.serializeParserOutput(vcs);
+            Converter.writeJsonToFile(json, filename);
+        }
+        return vcs;
     }
 }

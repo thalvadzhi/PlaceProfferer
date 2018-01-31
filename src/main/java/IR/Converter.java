@@ -7,10 +7,16 @@ package IR;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import constants.Constants;
+import edu.stanford.nlp.util.Pair;
+import nlp.Context;
+import nlp.Verb;
 
 import java.io.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  *
@@ -26,6 +32,36 @@ public class Converter {
         
         String json = gson.toJson(crawler.getPlaces(), type);
         return json;
+    }
+
+    public static String serializeParserOutput(HashMap<Integer, List<Pair<Verb, Context>>> activities){
+        Gson gson = new Gson();
+        Type type = new TypeToken<HashMap<Integer, List<Pair<Verb, Context>>>>() {}.getType();
+        String json = gson.toJson(activities, type);
+        return json;
+    }
+
+    public static void writeJsonToFile(String json, String fileName){
+        try (FileWriter writer = new FileWriter(fileName)){
+            writer.write(json);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static HashMap<Integer, List<Pair<Verb, Context>>> deserializeParserOutput(String json){
+        Gson gson = new Gson();
+        Type type = new TypeToken<HashMap<Integer, List<Pair<Verb, Context>>>>() {}.getType();
+        return gson.fromJson(json, type);
+    }
+
+    public static String readJsonFromFile(String fileName){
+        try(BufferedReader reader = new BufferedReader(new FileReader(fileName))){
+            return reader.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     public static ArrayList<Place> deserialization(String json){
