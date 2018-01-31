@@ -73,4 +73,13 @@ public class DataTransformation {
         }
         return normalizedReviews;
     }
+
+    public static List<ActivityPlace> addActivityInfoToPlaces(List<ActivityPlace> places, HashMap<Integer, List<Pair<Verb, Context>>> idToVerbContext){
+        List<ActivityPlace> placesWithActivities = new ArrayList<>();
+        for(ActivityPlace place : places){
+            place.setActivities(idToVerbContext.get(place.getId()));
+            placesWithActivities.add(place);
+        }
+        return placesWithActivities;
+    }
 }

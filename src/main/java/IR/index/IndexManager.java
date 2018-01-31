@@ -29,6 +29,8 @@ public class IndexManager {
     private HashMap<Context, List<Posting>> contextIndex;
     private HashMap<Integer, ActivityPlace> idIndex;
 
+    private HashMap<Integer, List<Pair<Verb, Context>>> idToVerbContext;
+
 
     public IndexManager(List<Place> crawledPlaces){
         this.crawledPlaces = crawledPlaces;
@@ -49,12 +51,15 @@ public class IndexManager {
         String json = null;
         try {
             json = reader.readLine();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
         this.crawledPlaces = Converter.deserialization(json);
         this.transformedPlaces = DataTransformation.transform(this.crawledPlaces);
-//        this.buildIndices();
+        String parse_final_js = Converter.readJsonFromFile("parse_final");
+        idToVerbContext = Converter.deserializeParserOutput(parse_final_js);
+        this.transformedPlaces = DataTransformation.addActivityInfoToPlaces(this.transformedPlaces, idToVerbContext);
     }
 
     public IndexManager(String indexPathString, boolean dummy){
@@ -229,7 +234,9 @@ public class IndexManager {
                     sortByRating(verbIndex.get(verbContextPair.first()));
                 }
                 //todo implement context resorting
-//                if(verbContextPair.second())
+                if(verbContextPair.second() != null){
+                    sortByRating(contextIndex.get(verbContextPair.second()));
+                }
             }
         }
     }
