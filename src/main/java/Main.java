@@ -63,7 +63,6 @@ public class Main {
 //        SynonymFinder finder = new SynonymFinder();
 //        List<String> synonymsOf = finder.findSynonymsOf("NN", "car");
 //        synonymsOf.forEach(System.out::println);
-////        System.out.println("gyz");
 //        HashMap<Integer, List<Sentence>> test = new HashMap<>();
 //        test.put(5, allSentences.get(5));
 //        int teodor_low_bound = 36;
@@ -80,7 +79,6 @@ public class Main {
 //        System.out.println("E");
         Sentence ss = new Sentence("take a photo");
 
-        System.out.println("GYZ");
 //        ss.sentiment();
 //        SemanticGraph semanticGraph = ss.dependencyGraph();
         List<Pair<Verb, Context>> verbContextPairs = VerbContextExtractor.getVerbContextPairs(ss);
