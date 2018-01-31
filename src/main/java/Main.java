@@ -67,14 +67,14 @@ public class Main {
 //        HashMap<Integer, List<Sentence>> test = new HashMap<>();
 //        test.put(5, allSentences.get(5));
         int teodor_low_bound = 17;
-        int iliyan_low_bound = 65;
-        int iliyan_upper_bound = 145;
+        int iliyan_low_bound = 87;
+        int iliyan_upper_bound = 127;
 //        String js = Converter.readJsonFromFile("parsed_all.txt");
         HashMap<Integer, List<Sentence>> iliyanSentences = new HashMap<>();
         for(int i = iliyan_low_bound; i <=iliyan_upper_bound; i++){
             iliyanSentences.put(i, allSentences.get(i));
         }
-        VerbContextExtractor.getAllActivities(iliyanSentences, "parsed_iliyan");
+        VerbContextExtractor.getAllActivities(iliyanSentences, "parsed_iliyan1");
 
 //        HashMap<Integer, List<Pair<Verb, Context>>> integerListHashMap = Converter.deserializeParserOutput(js);
         System.out.println("E");
@@ -85,6 +85,8 @@ public class Main {
 //        System.out.println(verbContextPairs);
 //        semanticGraph.prettyPrint();
 
-
+        //String js = Converter.readJsonFromFile("parsed_iliyan");
+        //HashMap<Integer, List<Pair<Verb, Context>>> integerListHashMap = Converter.deserializeParserOutput(js);
+        //System.out.println("E");
     }
 }
