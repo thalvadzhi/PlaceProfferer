@@ -7,6 +7,7 @@ import IR.index.IndexOperations;
 import IR.index.Posting;
 import constants.Constants;
 import edu.stanford.nlp.simple.Sentence;
+import edu.stanford.nlp.util.Index;
 import edu.stanford.nlp.util.Pair;
 import nlp.Context;
 import nlp.Verb;
@@ -115,6 +116,7 @@ public class QueryParser {
                 temp = handleSynonyms(pair, postingsContext, temp);
             }else{
                 temp = IndexOperations.operationAnd(postingsContext, postingsVerb);
+                temp = temp.stream().filter(posting -> actuallyHasVerbContext(posting, pair)).collect(Collectors.toList());
             }
             if(current == null){
                 current = temp;
@@ -124,6 +126,12 @@ public class QueryParser {
             }
         }
         return current;
+    }
+
+    private boolean actuallyHasVerbContext(Posting posting, Pair<Verb, Context> pair){
+        int id = posting.getPlaceId();
+        ActivityPlace pl = manager.getPlaceById(id);
+        return pl.getActivities().contains(pair);
     }
 
     private List<Posting> handleSynonyms(Pair<Verb, Context> pair, List<Posting> postingsContext, List<Posting> temp) {
@@ -155,26 +163,32 @@ public class QueryParser {
     }
 
     private List<Posting> getPostingsForVerbOnly(List<Posting> current, Sentence s) {
+        List<Posting> temp = new ArrayList<>();
         for(int i = 0; i < s.posTags().size(); i++){
             if(s.posTags().get(i).matches("V.*")){
                 //means its a verb
                 Verb verb = new Verb(s.lemma(i));
-                List<Posting> temp = manager.indexVerb(verb);
+                temp = manager.indexVerb(verb);
                 if(temp.size() == 0){
                     temp = getVerbSynonymPostings(verb, temp);
                 }
                 if(current == null){
                     current = temp;
+                    return current;
                 }else{
                     List<Posting> intersect = IndexOperations.operationAnd(current, temp);
                     if(intersect.size() == 0){
                         temp = getVerbSynonymPostings(verb, temp);
                     }
                     current = IndexOperations.operationAnd(current, temp);
+                    return current;
                 }
             }
         }
-        return current;
+        if(current == null){
+            return temp;
+        }
+        return IndexOperations.operationAnd(current, temp);
     }
 
     private List<Posting> getVerbSynonymPostings(Verb verb, List<Posting> temp) {
