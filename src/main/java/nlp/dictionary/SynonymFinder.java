@@ -16,9 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Created by thalvadzhiev on 1/30/18.
- */
+
 public class SynonymFinder {
     private Dictionary dict;
 

@@ -16,9 +16,7 @@ import java.util.stream.Collectors;
 import static constants.Constants.*;
 
 
-/**
- * Created by thalvadzhiev on 1/20/18.
- */
+
 public class VerbContextExtractor {
 
     public static List<Pair<Verb, Context>> getVerbContextPairs(Sentence s){

@@ -3,9 +3,7 @@ package nlp;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by thalvadzhiev on 1/21/18.
- */
+
 public class Context {
     public String value; //this is a noun
 
